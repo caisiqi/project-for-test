@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oliver.demo.dao.GblCustomerMapper">
+  <resultMap id="BaseResultMap" type="oliver.demo.bean.GblCustomer">
+    <result column="gbl_id" jdbcType="INTEGER" property="gblId" />
+    <result column="cust_no" jdbcType="INTEGER" property="custNo" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="region_no" jdbcType="INTEGER" property="regionNo" />
+    <result column="cust_name" jdbcType="VARCHAR" property="custName" />
+    <result column="cust_type" jdbcType="INTEGER" property="custType" />
+    <result column="sales_terr" jdbcType="INTEGER" property="salesTerr" />
+    <result column="entry_id" jdbcType="INTEGER" property="entryId" />
+    <result column="entry_datetime" jdbcType="TIMESTAMP" property="entryDatetime" />
+    <result column="last_update_datetime" jdbcType="TIMESTAMP" property="lastUpdateDatetime" />
+    <result column="h_version" jdbcType="INTEGER" property="hVersion" />
+    <result column="u_version" jdbcType="CHAR" property="uVersion" />
+  </resultMap>
+  <insert id="insert" parameterType="oliver.demo.bean.GblCustomer">
+    insert into gbl_customer (gbl_id, cust_no, parent_id, 
+      region_no, cust_name, cust_type, 
+      sales_terr, entry_id, entry_datetime, 
+      last_update_datetime, h_version, u_version
+      )
+    values (#{gblId,jdbcType=INTEGER}, #{custNo,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{regionNo,jdbcType=INTEGER}, #{custName,jdbcType=VARCHAR}, #{custType,jdbcType=INTEGER}, 
+      #{salesTerr,jdbcType=INTEGER}, #{entryId,jdbcType=INTEGER}, #{entryDatetime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateDatetime,jdbcType=TIMESTAMP}, #{hVersion,jdbcType=INTEGER}, #{uVersion,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="oliver.demo.bean.GblCustomer">
+    insert into gbl_customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gblId != null">
+        gbl_id,
+      </if>
+      <if test="custNo != null">
+        cust_no,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="regionNo != null">
+        region_no,
+      </if>
+      <if test="custName != null">
+        cust_name,
+      </if>
+      <if test="custType != null">
+        cust_type,
+      </if>
+      <if test="salesTerr != null">
+        sales_terr,
+      </if>
+      <if test="entryId != null">
+        entry_id,
+      </if>
+      <if test="entryDatetime != null">
+        entry_datetime,
+      </if>
+      <if test="lastUpdateDatetime != null">
+        last_update_datetime,
+      </if>
+      <if test="hVersion != null">
+        h_version,
+      </if>
+      <if test="uVersion != null">
+        u_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gblId != null">
+        #{gblId,jdbcType=INTEGER},
+      </if>
+      <if test="custNo != null">
+        #{custNo,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="regionNo != null">
+        #{regionNo,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null">
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null">
+        #{custType,jdbcType=INTEGER},
+      </if>
+      <if test="salesTerr != null">
+        #{salesTerr,jdbcType=INTEGER},
+      </if>
+      <if test="entryId != null">
+        #{entryId,jdbcType=INTEGER},
+      </if>
+      <if test="entryDatetime != null">
+        #{entryDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDatetime != null">
+        #{lastUpdateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hVersion != null">
+        #{hVersion,jdbcType=INTEGER},
+      </if>
+      <if test="uVersion != null">
+        #{uVersion,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="oliver.demo.bean.GblCustomer">
+    <result column="gbl_id" jdbcType="INTEGER" property="gblId" />
+    <result column="cust_no" jdbcType="INTEGER" property="custNo" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="region_no" jdbcType="INTEGER" property="regionNo" />
+    <result column="cust_name" jdbcType="VARCHAR" property="custName" />
+    <result column="cust_type" jdbcType="INTEGER" property="custType" />
+    <result column="sales_terr" jdbcType="INTEGER" property="salesTerr" />
+    <result column="entry_id" jdbcType="INTEGER" property="entryId" />
+    <result column="entry_datetime" jdbcType="TIMESTAMP" property="entryDatetime" />
+    <result column="last_update_datetime" jdbcType="TIMESTAMP" property="lastUpdateDatetime" />
+    <result column="h_version" jdbcType="INTEGER" property="hVersion" />
+    <result column="u_version" jdbcType="CHAR" property="uVersion" />
+  </resultMap>
+  <insert id="insert" parameterType="oliver.demo.bean.GblCustomer">
+    insert into gbl_customer (gbl_id, cust_no, parent_id, 
+      region_no, cust_name, cust_type, 
+      sales_terr, entry_id, entry_datetime, 
+      last_update_datetime, h_version, u_version
+      )
+    values (#{gblId,jdbcType=INTEGER}, #{custNo,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{regionNo,jdbcType=INTEGER}, #{custName,jdbcType=VARCHAR}, #{custType,jdbcType=INTEGER}, 
+      #{salesTerr,jdbcType=INTEGER}, #{entryId,jdbcType=INTEGER}, #{entryDatetime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateDatetime,jdbcType=TIMESTAMP}, #{hVersion,jdbcType=INTEGER}, #{uVersion,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="oliver.demo.bean.GblCustomer">
+    insert into gbl_customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gblId != null">
+        gbl_id,
+      </if>
+      <if test="custNo != null">
+        cust_no,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="regionNo != null">
+        region_no,
+      </if>
+      <if test="custName != null">
+        cust_name,
+      </if>
+      <if test="custType != null">
+        cust_type,
+      </if>
+      <if test="salesTerr != null">
+        sales_terr,
+      </if>
+      <if test="entryId != null">
+        entry_id,
+      </if>
+      <if test="entryDatetime != null">
+        entry_datetime,
+      </if>
+      <if test="lastUpdateDatetime != null">
+        last_update_datetime,
+      </if>
+      <if test="hVersion != null">
+        h_version,
+      </if>
+      <if test="uVersion != null">
+        u_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gblId != null">
+        #{gblId,jdbcType=INTEGER},
+      </if>
+      <if test="custNo != null">
+        #{custNo,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="regionNo != null">
+        #{regionNo,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null">
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null">
+        #{custType,jdbcType=INTEGER},
+      </if>
+      <if test="salesTerr != null">
+        #{salesTerr,jdbcType=INTEGER},
+      </if>
+      <if test="entryId != null">
+        #{entryId,jdbcType=INTEGER},
+      </if>
+      <if test="entryDatetime != null">
+        #{entryDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDatetime != null">
+        #{lastUpdateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hVersion != null">
+        #{hVersion,jdbcType=INTEGER},
+      </if>
+      <if test="uVersion != null">
+        #{uVersion,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

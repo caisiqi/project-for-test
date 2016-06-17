@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oliver.demo.dao.sybase.PartMasterDao">
+	
+	<select id="findByPartNo" resultType="map" parameterType="string">
+		<![CDATA[
+		select  sku_no,
+		u_version,
+		category_id,
+		series_no,
+		part_no,
+		short_desc,
+		long_desc,
+		catalog_desc,
+		ave_cost,
+		std_cost,
+		cost_meth,
+		abc_code,
+		prod_code,
+		prod_type,
+		weight,
+		cu_height,
+		cu_width,
+		cu_length,
+		entry_datetime,
+		entry_id,
+		ser_no_flag,
+		avail_to_sell,
+		active_status,
+		accept_rma,
+		production_flag,
+		po_cost,
+		vend_no,
+		pur_comment,
+		pur_end_date,
+		mar_comment,
+		mar_end_date,
+		shortage,
+		upc_code,
+		fixed_price,
+		sug_retail_price,
+		reorder_level,
+		reorder_qty,
+		package_qty,
+		wgt_chk_date,
+		mrp_date,
+		security,
+		wms_profile,
+		lifecycle_status,
+		source_status,
+		usage_type,
+		mfg_partno,
+		mult,
+		min_poqty,
+		master_flag,
+		group_id,
+		model,
+		vpl_no,
+		active_status_date,
+		last_pur_date,
+		prod_lifecycle_code,
+		bundle_kit from
+		part_master
+	   	where part_no = #{part_no}
+		]]>
+	</select>
+	
+	<update id="update" parameterType="map">
+	update part_master 
+	set entry_datetime = getdate()
+	<if test="po_cost != null">
+	, po_cost = #{po_cost}
+	</if>
+	where part_no = #{part_no}
+	</update>
+	
+</mapper>

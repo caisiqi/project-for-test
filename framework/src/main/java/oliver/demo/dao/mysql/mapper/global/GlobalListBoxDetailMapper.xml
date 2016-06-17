@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oliver.demo.dao.mysql.GlobalListBoxDetailDao">
+	
+	<!-- 直接copy的hibernate的配置文件，带复合主键 -->
+	<resultMap type="oliver.demo.dao.mysql.po.GlobalListBoxDetail" id="globalListBoxDetailMap">  
+          
+        <result column="h_version" property="hVersion"/>
+        <result column="code_desc" property="codeDesc"/>
+        <result column="active_flag" property="activeFlag"/>
+        <result column="sequence" property="sequence"/>
+        <result column="key1" property="key1"/>
+        <result column="ref1" property="ref1"/>
+        <result column="ref2" property="ref2"/>
+        <result column="entry_datetime" property="entryDatetime"/>
+        <result column="delete_datetime" property="deleteDatetime"/>
+        <result column="entry_id" property="entryId"/>
+        
+        <association property="id" javaType="oliver.demo.dao.mysql.po.GlobalListBoxDetailId">  
+            <result column="list_box_code" property="listBoxCode"/>  
+            <result column="code_value" property="codeValue"/>  
+            <result column="CisServer" property="cisServer"/>  
+        </association>
+        
+    </resultMap>
+    
+    <!-- 感觉mybatis参数传递是一个比较大的缺陷限制了dao层方法 -->
+    <!-- mybatis 传递多个参数只能传map或javabean, 可以考虑只在dao中申明一个find方法在mapper。xml文件中做条件控制 -->
+    <select id="find" resultMap="globalListBoxDetailMap" parameterType="map">
+	    select CisServer
+		,list_box_code
+		,code_value
+		,code_desc
+		,activeFlag
+		,sequence
+		,key1
+		,ref1
+		,ref2
+		,entry_datetime
+		,entry_id
+		,delete_datetime
+		,delete_id
+		,update_datetime
+		,h_version
+		,purgeFlag
+		,schedule_date
+		from global_list_box_detail
+		where 1 = 1
+		<if test="listBoxCode != null">
+		and list_box_code = #{listBoxCode}
+		</if>
+		<if test="cisServer != null">
+	    and CisServer = #{cisServer}
+	    </if>   
+    </select>
+	
+	<insert id="insert" parameterType="map">
+	   insert into global_list_box_detail(
+	   CisServer
+		,list_box_code
+		,code_value
+		,code_desc
+		,activeFlag
+		,sequence
+		,key1
+		,ref1
+		,ref2
+		,entry_datetime
+		,entry_id
+		,delete_datetime
+		,delete_id
+		,update_datetime
+		,h_version
+		,purgeFlag
+		,schedule_date
+	   )values(
+       #{CisServer}
+       ,#{list_box_code}
+        ,#{code_value}
+        ,#{code_desc}
+        ,#{activeFlag}
+        ,#{sequence}
+        ,#{key1}
+        ,#{ref1}
+        ,#{ref2}
+        ,#{entry_datetime}
+        ,#{entry_id}
+        ,#{delete_datetime}
+        ,#{delete_id}
+        ,#{update_datetime}
+        ,#{h_version}
+        ,#{purgeFlag}
+        ,#{schedule_date}
+	   )
+	</insert>
+	
+	<delete id="delete" parameterType="map">
+	delete from global_list_box_detail
+	where CisServer = #{CisServer}
+	and list_box_code = #{list_box_code}
+	and code_value = #{code_value}
+	</delete>
+	
+</mapper>

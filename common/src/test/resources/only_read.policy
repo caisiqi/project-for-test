@@ -1,0 +1,4 @@
+grant{  
+    permission java.io.FilePermission "<<ALL FILES>>","read";  
+};
+#-Djava.security.manager  -Djava.security.policy=classpath:only_read.policy

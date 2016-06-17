@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oliver.demo.dao.sybase.ProjectDao">
+	
+	<select id="findById" resultType="map" parameterType="int">
+		<![CDATA[
+		select  mfg_proj_id
+		, mfg_proj_ref_no
+	   	, cust_no
+	   	, start_date
+	   	, end_date
+	   	, entry_id
+	   	, entry_datetime
+	   	, loc_no
+	   	, approved_budget
+	   	, status
+	   	, signer_id
+	   	, sign_datetime
+	   	, comment
+	   	, auto_release_flag
+	   	, chg_status
+	   	, margin
+	   	, adv_fcst
+	   	, pool_flag 
+	   	, cust_fcst
+	   	, project_type 
+	   	, auto_bom
+	   	, standalone
+	   	from mfg_project
+	   	where mfg_proj_id = #{id}
+		]]>
+	</select>
+	
+	<select id="findByNo" resultType="map" parameterType="string">
+		<![CDATA[
+		select mfg_proj_id
+	   	, mfg_proj_ref_no
+	   	, cust_no
+	   	, start_date
+	   	, end_date
+	   	, entry_id
+	   	, entry_datetime
+	   	, loc_no
+	   	, approved_budget
+	   	, status
+	   	, signer_id
+	   	, sign_datetime
+	   	, comment
+	   	, auto_release_flag
+	   	, chg_status
+	   	, margin
+	   	, adv_fcst
+	   	, pool_flag 
+	   	, cust_fcst
+	   	, project_type 
+	   	, auto_bom
+	   	, standalone
+	   	from mfg_project
+	   	where mfg_proj_ref_no = #{no}
+		]]>
+	</select>
+	
+	<select id="list" resultType="map" parameterType="map">
+		select
+		<if test="rows != null">
+			top ${rows}
+		</if>
+		p.mfg_proj_id
+	   	, p.mfg_proj_ref_no
+	   	, p.cust_no
+	   	, p.start_date
+	   	, p.end_date
+	   	, p.entry_id
+	   	, p.entry_datetime
+	   	, p.loc_no
+	   	, p.approved_budget
+	   	, p.status
+	   	, p.signer_id
+	   	, p.sign_datetime
+	   	, p.comment
+	   	, p.auto_release_flag
+	   	, p.chg_status
+	   	, p.margin
+	   	, p.adv_fcst
+	   	, p.pool_flag 
+	   	, p.cust_fcst
+	   	, p.project_type 
+	   	, p.auto_bom
+	   	, p.standalone
+	   	, pm.part_no
+	   	, pm.model
+	   	, se.sys_type
+	   	from mfg_project as p
+	   	left join mfg_project_top_sku as s
+	   	on p.mfg_proj_id = s.mfg_proj_id
+	   	left join part_master as pm
+	   	on s.top_sku_no = pm.sku_no
+	   	left join sku_extension as se
+	   	on s.top_sku_no = se.sku_no
+	   	where 1 = 1
+	   	<if test="beginIndex != null">
+	   		and p.mfg_proj_id > ${beginIndex}
+	   	</if>
+	   	<if test="mfg_proj_ref_no != null">
+	   		and p.mfg_proj_ref_no = #{mfg_proj_ref_no}
+	   	</if>
+	   	<if test="cust_no != null">
+	   		and p.cust_no = convert(int,#{cust_no})
+	   	</if>
+	   	<if test="loc_no != null">
+	   		and p.loc_no = convert(int,#{loc_no})
+	   	</if>
+	   	<if test="status != null">
+	   		and p.status = #{status}
+	   	</if>
+		<if test="chg_status != null">
+	   		and p.chg_status = #{chg_status}
+	   	</if>
+	   	order by p.mfg_proj_id
+	</select>
+	
+	<select id="listMax" resultType="int" parameterType="map">
+		select 
+		<choose>
+			<when test="listCount > 0">
+			top ${listCount}
+			mfg_proj_id
+			from mfg_project  
+			order by mfg_proj_id
+			</when>
+			<otherwise>
+			0
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="listTotal" resultType="int" parameterType="map">
+		select count(*)
+	   	from mfg_project
+	   	where 1 = 1
+	   	<if test="mfg_proj_ref_no != null">
+	   		and mfg_proj_ref_no = #{mfg_proj_ref_no}
+	   	</if>
+	   	<if test="cust_no != null">
+	   		and cust_no = convert(int,#{cust_no})
+	   	</if>
+	   	<if test="loc_no != null">
+	   		and loc_no = convert(int,#{loc_no})
+	   	</if>
+	   	<if test="status != null">
+	   		and status = #{status}
+	   	</if>
+		<if test="chg_status != null">
+	   		and chg_status = #{chg_status}
+	   	</if>
+	</select>
+	
+	<select id="ajaxCustNo" resultType="map">
+		select cust_no, cust_name from customer_header
+	</select>
+	
+	<select id="ajaxLocNo" resultType="map">
+		select loc_no, loc_name, loc_char, loc_addr, loc_city, loc_state from location_info
+		where loc_char is not null
+	</select>
+	
+	<insert id="save" parameterType="map">
+		insert into mfg_project (
+			mfg_proj_id
+		   , mfg_proj_ref_no
+		   , cust_no
+		   , start_date
+		   , end_date
+		   , entry_id
+		   , entry_datetime
+		   , loc_no
+		   , approved_budget
+		   , status
+		   , signer_id
+		   , sign_datetime
+		   , comment
+		   , auto_release_flag
+		   , chg_status
+		   , margin
+		   , adv_fcst
+		   , pool_flag 
+		   , cust_fcst
+		   , project_type 
+		   , auto_bom
+		   , standalone
+		) values (
+			#{mfg_proj_id}
+		   ,#{ mfg_proj_ref_no}
+		   ,#{cust_no}
+		   ,#{ start_date}
+		   ,#{ end_date}
+		   ,#{ entry_id}
+		   ,#{ entry_datetime}
+		   ,#{ loc_no}
+		   ,#{ approved_budget}
+		   ,#{ status}
+		   ,#{ signer_id}
+		   ,#{ sign_datetime}
+		   ,#{ comment}
+		   ,#{ auto_release_flag}
+		   ,#{ chg_status}
+		   ,#{ margin}
+		   ,#{ adv_fcst}
+		   ,#{ pool_flag} 
+		   ,#{ cust_fcst}
+		   ,#{ project_type} 
+		   ,#{ auto_bom}
+		   ,#{ standalone}
+		)
+	</insert>
+	
+	<update id="update" parameterType="map">
+		update mfg_project
+		set 1 = 1
+		<if test="mfg_proj_ref_no != null">
+		, mfg_proj_ref_no = #{mfg_proj_ref_no}
+		</if>
+		 <if test="cust_no != null">
+		, cust_no = #{cust_no}
+		</if>
+		<if test="start_date != null">
+		, start_date = #{start_date}
+		</if>
+		<if test="end_date != null">
+		, end_date = #{end_date}
+		</if>
+		<if test="entry_id != null">
+		, entry_id = #{entry_id}
+		</if>
+		<if test="entry_datetime != null">
+		, entry_datetime = #{entry_datetime}
+		</if>
+		<if test="loc_no != null">
+		, loc_no = #{loc_no}
+		</if>
+		<if test="status != null">
+		, status = #{status}
+		</if>
+		<if test="approved_budget != null">
+		, approved_budget = #{approved_budget}
+		</if>
+		where mfg_proj_id = #{mfg_proj_id}
+	</update>
+	
+</mapper>

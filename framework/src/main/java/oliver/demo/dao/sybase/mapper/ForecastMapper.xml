@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oliver.demo.dao.sybase.ForecastDao">
+	
+	<select id="getFcstByProjId" resultType="map" parameterType="int">
+		select 
+		f.fcst_id
+		,f.mfg_proj_id
+		,f.top_sku_no
+		,f.fcst_qty
+		,f.fcst_date
+		,f.entry_datetime
+		,f.entry_id
+		,f.update_datetime
+		,f.update_id
+		,f.h_version
+		,f.demand_type
+		from mfg_project_forecast as f
+		where mfg_proj_id = #{id}
+		order by
+		f.fcst_date asc
+	</select>
+	
+</mapper>

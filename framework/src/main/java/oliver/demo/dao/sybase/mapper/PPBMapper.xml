@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oliver.demo.dao.sybase.PPBDao">
+	
+	<resultMap type="oliver.demo.dao.sybase.po.MFGProjPlanningBom" id="ppbMapResult">  
+	    <id column="treeId" property="treeId" />  
+	    <result column="topSkuNo" property="topSkuNo"/>
+	    <result column="mfgProjId" property="mfgProjId"/>
+	    <result column="parentId" property="parentId"/>
+	    <result column="line_no" property="lineNo"/>
+	    <result column="preBuild" property="preBuild"/>
+	    <result column="entryDate" property="entryDate"/>
+	    <result column="updateDate" property="updateDate"/>
+		<result column="topSkuNo" property="topSkuNo"/>
+		<!-- 
+		<result column="topSkuNo" property="topSkuNo"/>
+		<result column="topSkuNo" property="topSkuNo"/>
+		<result column="topSkuNo" property="topSkuNo"/> 
+		-->	      
+	      
+	    <association property="part" javaType="oliver.demo.dao.sybase.po.MRPPartMaster">  
+	        <result column="topSkuNo" property="skuNo"/>  
+	        <result column="partNo" property="partNo"/>  
+	        <result column="categoryId" property="categoryId"/>  
+	        <result column="seriesNo" property="seriesNo"/>
+	        <result column="shortDesc" property="shortDesc"/>
+	        <result column="longDesc" property="longDesc"/>
+	        <result column="catalogDesc" property="catalogDesc"/>
+	        <result column="aveCost" property="aveCost"/>
+	        <result column="stdCost" property="stdCost"/>
+	        <result column="costMeth" property="costMeth"/>
+	        <result column="abcCode" property="abcCode"/>
+	        <result column="prodCode" property="prodCode"/>
+	        <result column="prodType" property="prodType"/>
+	        <result column="model" property="model"/>
+	    </association>
+	    
+	    <association property="entryUser" javaType="oliver.demo.dao.sybase.po.ManagerLightWeight">  
+	        <id column="userId" property="userid"/>  
+	        <result column="loginid" property="loginid"/>  
+	        <result column="lastname" property="lastname"/>  
+	        <result column="firstname" property="firstname"/>  
+	    </association>  
+	    
+	    <association property="updateUser" javaType="oliver.demo.dao.sybase.po.ManagerLightWeight">  
+	        <id column="updateId" property="userid"/>  
+	        <result column="loginid" property="loginid"/>  
+	        <result column="lastname" property="lastname"/>  
+	        <result column="firstname" property="firstname"/>  
+	    </association>
+	    
+	    <collection property="children" ofType="oliver.demo.dao.sybase.po.MFGProjPlanningBom" select="find" column="{parentId=treeId}"/>
+	    
+	</resultMap> 
+	
+	<select id="find" resultMap="ppbMapResult" parameterType="map">
+		select a.tree_id as treeId
+		,a.top_sku_no as topSkuNo
+		,a.mfg_proj_id as mfgProjId
+		,a.parent_id as parentId
+		,a.sku_no as skuNo
+		,a.line_no as line_no
+		,a.prebuild as preBuild
+		,a.comp_qty as compQty
+		,a.entry_datetime as entryDate
+		,a.entry_id as userId
+		,a.update_datetime as updateDate
+		,a.update_id as updateId
+		,a.status as status
+		,a.priority as altPartPriority
+		,a.alter_percentage as altPartPercentage
+		,a.alloc_model as allocModel
+		,a.group_name as altPartGroup
+		,a.pr as pr
+		,a.expanded_bom_qty as expandedBomQty
+		,a.life_cycle as lifeCycle
+		,a.spare_qty as spareQty
+		,a.spare_percentage as sparePercentage
+		,b.part_no as partNo
+		,b.category_id as categoryId
+		,b.series_no as seriesNo
+		,b.short_desc as shortDesc
+		,b.long_desc as longDesc
+		,b.catalog_desc as catalogDesc
+		,b.ave_cost as aveCost
+		,b.std_cost as stdCost
+		,b.cost_meth as costMeth
+		,b.abc_code as abcCode
+		,b.prod_code as prodCode
+		,b.prod_type as prodType
+		,b.model as model
+		<!-- Don't used temporarily
+		,b.weight as weight
+		,b.cu_height as cuHeight
+		,b.cu_width as cuWidth
+		,b.cu_length as cuLength
+		,b.entry_datetime as entryDatetime
+		,b.entry_id as entryId
+		,b.ser_no_flag as serNoFlag
+		,b.avail_to_sell as availToSell
+		,b.active_status as activeStatus
+		,b.accept_rma as acceptRma
+		,b.production_flag as productionFlag
+		,b.po_cost as poCost
+		,b.vend_no as vendNo
+		,b.pur_comment as purComment
+		,b.pur_end_date as purEndDate
+		,b.mar_comment as marComment
+		,b.mar_end_date as marEndDate
+		,b.shortage as shortage
+		,b.upc_code as upcCode
+		,b.fixed_price as fixedPrice
+		,b.sug_retail_price as sugRetailPrice
+		,b.reorder_level as reorderLevel
+		,b.reorder_qty as reorderQty
+		,b.package_qty as packageQty
+		,b.wgt_chk_date as wgtChkDate
+		,b.mrp_date as mrpDate
+		,b.security as security
+		,b.wms_profile as wmsProfile
+		,b.lifecycle_status as lifecycleStatus
+		,b.source_status as sourceStatus
+		,b.usage_type as usageType
+		,b.mfg_partno as mfgPartno
+		,b.mult as mult
+		,b.min_poqty as minPoqty
+		,b.master_flag as masterFlag
+		,b.vpl_no as vplNo
+		,b.active_status_date as activeStatusDate
+		,b.last_pur_date as lastPurDate
+		,b.prod_lifecycle_code as prodLifecycleCode
+		,b.bundle_kit as bundleKit
+		-->
+		from mfg_project_planning_bom as a
+		inner join part_master as b
+		on a.top_sku_no = b.sku_no
+		where 1 = 1
+		<if test="treeId != null">
+			and a.tree_id = #{treeId}
+		</if>
+		<if test="parentId != null">
+	   		and a.parent_id = #{parentId}
+	   	</if>
+	</select>
+	
+</mapper>

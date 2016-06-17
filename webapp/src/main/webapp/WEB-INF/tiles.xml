@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?> 
+<!DOCTYPE tiles-definitions PUBLIC 
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd"> 
+
+<tiles-definitions> 
+
+    <!-- Default Wizard Template --> 
+    <definition name="wizard.definition" template="/WEB-INF/layout/wizard_layout.jsp"> 
+        <put-attribute name="title" value="" type="string" /> 
+        <put-attribute name="content" value="" />
+        <put-attribute name="backEventId" value="" type="string"/>
+        <put-attribute name="nextEventId" value="" type="string"/>
+        <put-attribute name="finEventId" value="" type="string"/> 
+    </definition> 
+
+    <definition name="newProject.definition" extends="wizard.definition">
+    	<put-attribute name="title" value="New Project"></put-attribute>
+        <put-attribute name="content" value="/WEB-INF/page/project_edit.jsp" /> 
+    	<put-attribute name="backEventId" value="back"/>
+        <put-attribute name="nextEventId" value="next"/>
+        <put-attribute name="finEventId" value="finish"/> 
+    </definition>
+    
+    <definition name="projectList.definition" extends="wizard.definition">
+    	<put-attribute name="title" value="Project List"></put-attribute>
+        <put-attribute name="content" value="/WEB-INF/page/project_list.jsp" /> 
+    	<put-attribute name="backEventId" value="back"/>
+        <put-attribute name="nextEventId" value="next"/>
+        <put-attribute name="finEventId" value="finish"/> 
+    </definition> 
+
+</tiles-definitions> 

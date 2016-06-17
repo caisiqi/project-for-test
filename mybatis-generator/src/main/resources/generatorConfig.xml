@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    
+    <!-- 
+	<classPathEntry> 元素 用于添加运行类路径位置到类路径中的 MyBatis Generator（MBG）。 <classPathEntry> 元素是<generatorConfiguration> 的子元素. MBG 在这些情况下从这些路径下加载类:
+	
+	当加载 JDBC 驱动内省数据库时
+	当加载根类中的 JavaModelGenerator 检查重写的方法时
+	这个元素是可选的，而且如果您给MGB安装了类路径，您就不需要这个元素(例如 使用java命令时使用参数-cp)
+    -->
+    <!-- <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" /> -->
+    <classPathEntry location="C:/Users/oliverc/.m2/repository/mysql/mysql-connector-java/5.1.8/mysql-connector-java-5.1.8.jar" />
+
+  <context id="mysqlHyveTables" targetRuntime="MyBatis3">
+    <commentGenerator>
+        <property name="suppressAllComments" value="true"/>
+        <property name="suppressDate" value="true" />
+    </commentGenerator>
+    
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://hyve-mysql-dev.synnex.org:3308/HYVE"
+        userId="jbpm4"
+        password="jbpm4">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="oliver.demo.bean" targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="oliver.demo.mapper"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="oliver.demo.dao"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+     <table tableName="ppdc_detail"></table>
+  </context>
+  
+  <context id="mysqlGlobalTables" targetRuntime="MyBatis3">
+    
+    <commentGenerator>
+        <property name="suppressAllComments" value="true"/>
+        <property name="suppressDate" value="true" />
+    </commentGenerator>
+    
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://FCA-MyGblDev.synnex.org:3308/CIS"
+        userId="jbpm4"
+        password="jbpm4">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="oliver.demo.bean" targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="oliver.demo.mapper"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="oliver.demo.dao"  targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+    
+    <!-- 
+    <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+      <property name="useActualColumnNames" value="true"/>
+      <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+      <columnOverride column="DATE_FIELD" property="startDate" />
+      <ignoreColumn column="FRED" />
+      <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+    </table>
+     -->
+     <table tableName="gbl_customer" enableSelectByExample="false"
+        enableDeleteByExample="false"
+        enableCountByExample="false"
+        enableUpdateByExample="false"
+        selectByExampleQueryId="false">
+     </table>
+  </context>
+</generatorConfiguration>

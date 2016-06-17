@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"     
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+            http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.2.xsd">
+		
+		<!-- 开启mvc的注解映射 -->
+		<mvc:annotation-driven>
+			<mvc:argument-resolvers>  
+	            <!-- <bean class="oliver.demo.util.MapArgumentResolver"/> -->
+	        </mvc:argument-resolvers>
+		</mvc:annotation-driven>
+		
+		<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+			<property name="customArgumentResolvers">
+				<list>
+					<!-- MyWebArgumentResolver is not offspring of HandlerMethodArgumentResolver-->
+					<!-- <bean class="oliver.demo.util.MyWebArgumentResolver"/> -->
+					<!-- MapArgumentResolver seems like not useful -->
+					<!-- <bean class="oliver.demo.util.MapArgumentResolver"/> -->
+				</list>
+			</property>
+			<property name="messageConverters">
+				<list>
+					<ref bean="stringHttpMessageConverter"/>
+					<ref bean="formHttpMessageConverter"/>
+					<ref bean="mappingJackson2HttpMessageConverter"/>
+				</list>
+			</property>
+		</bean>
+		
+		<!-- AnnotationMethodHandlerAdapter & DefaultAnnotationHandlerMapping is deprecated since spring 3.2 -->
+		<!-- 完成请求和注解POJO的映射 -->
+		<!-- <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>   
+		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+			<property name="messageConverters">
+				<list>
+					<ref bean="stringHttpMessageConverter"/>
+					<ref bean="formHttpMessageConverter"/>
+					<ref bean="mappingJackson2HttpMessageConverter"/>
+				</list>
+			</property>
+		</bean> -->
+		
+		<bean id="mappingJackson2HttpMessageConverter" 
+			class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<property name="supportedMediaTypes">
+	            <list>
+	                <value>text/html;charset=utf-8</value>
+	                <value>text/plain;charset=utf-8</value>
+	                <value>application/json;charset=utf-8</value>
+	            </list>
+	        </property>
+		</bean>
+		
+		<bean id="formHttpMessageConverter" 
+			class="org.springframework.http.converter.FormHttpMessageConverter"/>
+		
+		<bean id="stringHttpMessageConverter" 
+			class="org.springframework.http.converter.StringHttpMessageConverter"/>
+		
+		<bean id="multipartResolver" 
+			class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<property name="maxUploadSize" value="999999999" />
+		</bean>
+
+		<!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+		<bean id="internalResourceViewResolver"
+			class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+			p:prefix="/WEB-INF/" p:suffix=".jsp" />
+		
+		<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+		    <!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->  
+		    <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		    <property name="defaultErrorView" value="error/500"></property>
+		      
+		    <!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->  
+		    <property name="exceptionAttribute" value="ex"></property>  
+		    
+		    <!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->  
+		    <property name="exceptionMappings">  
+		        <props>  
+		            <prop key="oliver.demo.exception.BusinessException">error/500</prop>  
+		            <prop key="oliver.demo.exception.AuthException">error/403</prop>
+		            <prop key="oliver.demo.common.exception.ArgumentException">error/500</prop>
+		            <!-- 这里还可以继续扩展对不同异常类型的处理 -->  
+		        </props>  
+			</property>
+	         
+	        <property name="statusCodes">     
+	            <props>     
+	                <prop key="error/500">500</prop>     
+	            </props>     
+	        </property>     
+	        <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->     
+	        <property name="warnLogCategory" value="WARN"></property>     
+	        <!-- 默认HTTP状态码 -->     
+	        <property name="defaultStatusCode" value="500"></property>  
+		</bean>
+		
+		
+		<bean id="tilesViewResolver" 
+		    class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 
+		    <property name="viewClass"> 
+		    <value> 
+		    	org.springframework.web.servlet.view.tiles3.TilesView 
+		    </value> 
+		    </property> 
+	    </bean> 
+		    
+	    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"> 
+		    <property name="definitions"> 
+		    <list> 
+		    	<value>/WEB-INF/tiles.xml</value> 
+		    </list> 
+		    </property> 
+	    </bean> 
+		
+		<!-- flowExecutor在 applicationContext-webflow.xml中定义 -->
+		<!-- <bean id="flowController" class="org.springframework.webflow.mvc.servlet.FlowController">
+			<property name="flowExecutor" ref="flowExecutor" />
+		</bean> -->
+		
+		<bean id="websocketHandler" class="oliver.demo.handler.MyWebSocketHandler"/>  
+		  
+		<websocket:handlers>  
+		    <websocket:mapping path="/websocket" handler="websocketHandler"/>  
+		    <websocket:handshake-interceptors>  
+		      <bean class="oliver.demo.interceptor.HandshakeInterceptor"/>  
+		    </websocket:handshake-interceptors>  
+		</websocket:handlers>  
+		
+		
+		<!-- static resources mapping -->
+		<mvc:resources mapping="/js/**" location="/js/"/>  
+   		<mvc:resources mapping="/style/**" location="/style/"/>  
+    	<mvc:resources mapping="/image/**" location="/image/"/>
+    	<mvc:resources mapping="/WEB-INF/page/**" location="/WEB-INF/page/"/>
+    	<mvc:resources mapping="/bootstrap-3.3.5-dist/**" location="/bootstrap-3.3.5-dist/"/>
+		
+</beans>

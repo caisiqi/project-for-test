@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"     
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+			
+	<bean id="mysqlHyveDS" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+        <!-- init-method="init" destroy-method="close"> -->
+        <description>mysql xa datasource</description>
+        <property name="uniqueResourceName">
+            <value>mysql_hyve_ds</value>
+        </property>
+        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="user">${jdbc.mysql.hyve.username}</prop>
+                <prop key="password">${jdbc.mysql.hyve.password}</prop>
+                <prop key="url">${jdbc.mysql.hyve.url}</prop>
+            </props>
+        </property>
+        <!-- 连接池里面连接的个数? --> 
+        <property name="poolSize" value="10"/>
+    </bean>
+    
+    <bean id="mysqlGlobalDS" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+       <!--  init-method="init" destroy-method="close"> -->
+        <description>mysql xa datasource</description>
+        <property name="uniqueResourceName">
+            <value>mysql_global_ds</value>
+        </property>
+        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="user">${jdbc.mysql.global.username}</prop>
+                <prop key="password">${jdbc.mysql.global.password}</prop>
+                <prop key="url">${jdbc.mysql.global.url}</prop>
+            </props>
+        </property>
+        <!-- 连接池里面连接的个数? --> 
+        <property name="poolSize" value="10"/> 
+    </bean>
+    
+    <!-- java.sql.SQLException: JZ0XS: 此服务器不支持 XA 样式的事务。请校验在此服务器上该事务功能是否已启用并获得许可。 -->
+    <!-- hyvedev不支持XA事务 -->
+    <!-- 
+    <bean id="sybaseCisDS" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+        init-method="init" destroy-method="close">
+        <description>sybase xa datasource</description>
+        <property name="uniqueResourceName">
+            <value>sybase_cis_ds</value>
+        </property>
+        <property name="xaDataSourceClassName" value="com.sybase.jdbc2.jdbc.SybXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+                <prop key="serverName">${jdbc.servername}</prop>
+                <prop key="portNumber">6100</prop>
+            </props>
+        </property>
+    </bean> 
+     -->
+	
+ </beans>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"     
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/context/spring-tx-4.2.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/context/spring-aop-4.2.xsd">
+	       
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+		<!-- 使用不了XA事务
+		<property name="dataSource" ref="sybaseCisDS" /> 
+		-->  
+	    <property name="dataSource" ref="dataSource"/>
+	    <!-- 自动扫描mapping.xml文件 -->  
+	    <property name="mapperLocations">
+	   		<list>
+               <value>classpath:oliver/demo/dao/sybase/mapper/*Mapper.xml</value>
+           </list>
+	    </property>
+	    <!-- sybase分页插件不完善，考虑使用sp包裹查询sql实现分页 
+	    <property name="plugins">
+	    	<array>
+	    		<ref bean="sybasePagePlugin"/>
+	    	</array>
+	    </property> 
+	    -->
+	</bean>
+	
+	<bean id="mysqlHyveSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="mysqlHyveDS" />  
+        <!-- 自动扫描mapping.xml文件 -->  
+        <property name="mapperLocations">
+            <list>
+               <value>classpath:oliver/demo/dao/mysql/mapper/hyve/*Mapper.xml</value>
+           </list>
+        </property>
+    </bean>
+    
+    <!-- 
+    mapperLocations 的路径不能相同，相同可能会导致以下警告导致mybatis找不到mapper方法
+             警告: Skipping MapperFactoryBean with name 'globalListBoxDetailDao' and 'oliver.demo.dao.mysql.GlobalListBoxDetailDao' mapperInterface. Bean already defined with the same name!
+             五月 06, 2016 11:27:51 上午 org.mybatis.spring.mapper.ClassPathMapperScanner checkCandidate
+             警告: Skipping MapperFactoryBean with name 'PPDCDetailDao' and 'oliver.demo.dao.mysql.PPDCDetailDao' mapperInterface. Bean already defined with the same name!
+    -->
+    <bean id="mysqlGlobalSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="mysqlGlobalDS" />  
+        <!-- 自动扫描mapping.xml文件 -->  
+        <property name="mapperLocations">
+            <list>
+               <value>classpath:oliver/demo/dao/mysql/mapper/global/*Mapper.xml</value>
+           </list>
+        </property>
+    </bean>
+	
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+	    <property name="basePackage" value="oliver.demo.dao.sybase" />  
+	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="oliver.demo.dao.mysql" />  
+        <property name="sqlSessionFactoryBeanName" value="mysqlHyveSqlSessionFactory"></property>  
+        <!-- 使用 annotationClass将比使用markerInterface具有优势 -->
+        <property name="annotationClass" value="oliver.demo.annotation.MysqlHyve"></property>
+    </bean>
+    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="oliver.demo.dao.mysql" />  
+        <property name="sqlSessionFactoryBeanName" value="mysqlGlobalSqlSessionFactory"></property>  
+        <property name="annotationClass" value="oliver.demo.annotation.MysqlGlobal"></property>
+    </bean>
+    
+    <import resource="persistence-transaction-atomikos.xml"/>
+    
+ </beans>

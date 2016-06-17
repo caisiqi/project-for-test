@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="oliver.demo.dao.mysql.GblCustomerDao" >
+  <resultMap id="gblCustomer" type="oliver.demo.bean.GblCustomer" >
+    <result column="gbl_id" property="gblId" jdbcType="INTEGER" />
+    <result column="cust_no" property="custNo" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="region_no" property="regionNo" jdbcType="INTEGER" />
+    <result column="cust_name" property="custName" jdbcType="VARCHAR" />
+    <result column="cust_type" property="custType" jdbcType="INTEGER" />
+    <result column="sales_terr" property="salesTerr" jdbcType="INTEGER" />
+    <result column="entry_id" property="entryId" jdbcType="INTEGER" />
+    <result column="entry_datetime" property="entryDatetime" jdbcType="TIMESTAMP" />
+    <result column="last_update_datetime" property="lastUpdateDatetime" jdbcType="TIMESTAMP" />
+    <result column="h_version" property="hVersion" jdbcType="INTEGER" />
+    <result column="u_version" property="uVersion" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="gblCustomerColumnList">
+	gbl_id, cust_no, parent_id, 
+	region_no, cust_name, cust_type, 
+	sales_terr, entry_id, entry_datetime, 
+    last_update_datetime, h_version, u_version
+  </sql>
+   
+   <select id="selectAllGblCustomer" resultMap="gblCustomer">
+   select
+   <include refid="gblCustomerColumnList"/>
+   from gbl_customer
+   </select>
+     
+  <insert id="insert" parameterType="oliver.demo.bean.GblCustomer" >
+    insert into gbl_customer (
+         <include refid="gblCustomerColumnList" />
+      )
+    values (#{gblId,jdbcType=INTEGER}, #{custNo,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{regionNo,jdbcType=INTEGER}, #{custName,jdbcType=VARCHAR}, #{custType,jdbcType=INTEGER}, 
+      #{salesTerr,jdbcType=INTEGER}, #{entryId,jdbcType=INTEGER}, #{entryDatetime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateDatetime,jdbcType=TIMESTAMP}, #{hVersion,jdbcType=INTEGER}, #{uVersion,jdbcType=CHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="oliver.demo.bean.GblCustomer" >
+    insert into gbl_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gblId != null" >
+        gbl_id,
+      </if>
+      <if test="custNo != null" >
+        cust_no,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="regionNo != null" >
+        region_no,
+      </if>
+      <if test="custName != null" >
+        cust_name,
+      </if>
+      <if test="custType != null" >
+        cust_type,
+      </if>
+      <if test="salesTerr != null" >
+        sales_terr,
+      </if>
+      <if test="entryId != null" >
+        entry_id,
+      </if>
+      <if test="entryDatetime != null" >
+        entry_datetime,
+      </if>
+      <if test="lastUpdateDatetime != null" >
+        last_update_datetime,
+      </if>
+      <if test="hVersion != null" >
+        h_version,
+      </if>
+      <if test="uVersion != null" >
+        u_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gblId != null" >
+        #{gblId,jdbcType=INTEGER},
+      </if>
+      <if test="custNo != null" >
+        #{custNo,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="regionNo != null" >
+        #{regionNo,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null" >
+        #{custType,jdbcType=INTEGER},
+      </if>
+      <if test="salesTerr != null" >
+        #{salesTerr,jdbcType=INTEGER},
+      </if>
+      <if test="entryId != null" >
+        #{entryId,jdbcType=INTEGER},
+      </if>
+      <if test="entryDatetime != null" >
+        #{entryDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateDatetime != null" >
+        #{lastUpdateDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hVersion != null" >
+        #{hVersion,jdbcType=INTEGER},
+      </if>
+      <if test="uVersion != null" >
+        #{uVersion,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
